@@ -36,6 +36,9 @@ pub fn main() !void {
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
 
+    const start_total = std.time.nanoTimestamp();
+
+    const start_create = std.time.nanoTimestamp();
     const n = 100_000_000;
     var data = try std.ArrayList(f64).initCapacity(allocator, n);
     defer data.deinit(allocator);
@@ -52,7 +55,20 @@ pub fn main() !void {
         const val = rng.float(f64) * 200.0 - 100.0;
         data.appendAssumeCapacity(val);
     }
+    const end_create = std.time.nanoTimestamp();
 
+    const start_average = std.time.nanoTimestamp();
     const avg = averageSimd(data.items);
+    const end_average = std.time.nanoTimestamp();
+
+    const end_total = std.time.nanoTimestamp();
+
+    const create_time = @as(f64, @floatFromInt(end_create - start_create)) / 1_000_000_000.0;
+    const average_time = @as(f64, @floatFromInt(end_average - start_average)) / 1_000_000_000.0;
+    const total_time = @as(f64, @floatFromInt(end_total - start_total)) / 1_000_000_000.0;
+
     std.debug.print("average = {d}\n", .{avg});
+    std.debug.print("Data creation: {d:.6} seconds\n", .{create_time});
+    std.debug.print("Averaging:     {d:.6} seconds\n", .{average_time});
+    std.debug.print("Total:         {d:.6} seconds\n", .{total_time});
 }

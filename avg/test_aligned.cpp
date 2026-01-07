@@ -2,6 +2,8 @@
 #include <random>
 #include <iostream>
 #include <cstdlib>
+#include <chrono>
+#include <iomanip>
 
 // Optimized with loop unrolling for auto-vectorization
 inline double average_optimized(const double* __restrict__ data, size_t n) {
@@ -33,6 +35,9 @@ inline double average_optimized(const double* __restrict__ data, size_t n) {
 }
 
 int main() {
+    auto start_total = std::chrono::high_resolution_clock::now();
+
+    auto start_create = std::chrono::high_resolution_clock::now();
     constexpr size_t n = 100'000'000;
 
     // Allocate 64-byte aligned memory
@@ -48,10 +53,24 @@ int main() {
     for (size_t i = 0; i < n; ++i) {
         data[i] = dist(rng);
     }
+    auto end_create = std::chrono::high_resolution_clock::now();
 
+    auto start_average = std::chrono::high_resolution_clock::now();
     double avg = average_optimized(data, n);
+    auto end_average = std::chrono::high_resolution_clock::now();
+
+    auto end_total = std::chrono::high_resolution_clock::now();
+
+    auto create_time = std::chrono::duration<double>(end_create - start_create).count();
+    auto average_time = std::chrono::duration<double>(end_average - start_average).count();
+    auto total_time = std::chrono::duration<double>(end_total - start_total).count();
+
     std::cout << "average = " << avg << '\n';
     std::cout << "alignment = " << (reinterpret_cast<uintptr_t>(data) % 64) << '\n';
+    std::cout << std::fixed << std::setprecision(6);
+    std::cout << "Data creation: " << create_time << " seconds\n";
+    std::cout << "Averaging:     " << average_time << " seconds\n";
+    std::cout << "Total:         " << total_time << " seconds\n";
 
     std::free(data);
     return 0;

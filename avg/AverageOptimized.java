@@ -34,6 +34,9 @@ public class AverageOptimized {
     }
 
     public static void main(String[] args) {
+        long startTotal = System.nanoTime();
+
+        long startCreate = System.nanoTime();
         final int n = 100_000_000;
         double[] data = new double[n];
 
@@ -42,8 +45,21 @@ public class AverageOptimized {
         for (int i = 0; i < n; i++) {
             data[i] = rng.nextDouble() * 200.0 - 100.0;
         }
+        long endCreate = System.nanoTime();
 
+        long startAverage = System.nanoTime();
         double avg = average(data);
+        long endAverage = System.nanoTime();
+
+        long endTotal = System.nanoTime();
+
+        double createTime = (endCreate - startCreate) / 1_000_000_000.0;
+        double averageTime = (endAverage - startAverage) / 1_000_000_000.0;
+        double totalTime = (endTotal - startTotal) / 1_000_000_000.0;
+
         System.out.println("average = " + avg);
+        System.out.printf("Data creation: %.6f seconds%n", createTime);
+        System.out.printf("Averaging:     %.6f seconds%n", averageTime);
+        System.out.printf("Total:         %.6f seconds%n", totalTime);
     }
 }
