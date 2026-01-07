@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.Locale;
 
 public class AverageOptimized {
     // Optimized with loop unrolling and primitive array
@@ -57,9 +58,9 @@ public class AverageOptimized {
         double averageTime = (endAverage - startAverage) / 1_000_000_000.0;
         double totalTime = (endTotal - startTotal) / 1_000_000_000.0;
 
-        System.out.println("average = " + avg);
-        System.out.printf("Data creation: %.6f seconds%n", createTime);
-        System.out.printf("Averaging:     %.6f seconds%n", averageTime);
-        System.out.printf("Total:         %.6f seconds%n", totalTime);
+        System.out.println(Locale.US + "average = " + avg);
+        System.out.printf(Locale.US, "Data creation: %.6f seconds%n", createTime);
+        System.out.printf(Locale.US, "Averaging:     %.6f seconds%n", averageTime);
+        System.out.printf(Locale.US, "Total:         %.6f seconds%n", totalTime);
     }
 }

@@ -25,6 +25,7 @@ def compile_benchmarks():
         ("g++ -O3 -march=native -std=c++20 test.cpp -o build/test_cpp", "C++ - Basic"),
         ("g++ -O3 -march=native -std=c++20 test_optimized.cpp -o build/test_optimized_cpp", "C++ - Optimized"),
         ("g++ -O3 -march=native -std=c++20 test_aligned.cpp -o build/test_aligned_cpp", "C++ - Aligned"),
+        ("clang -O3 -Wall -Wextra average.c -o build/average_c", "C - Basic"),
     ]
 
     for cmd, name in commands:
@@ -149,6 +150,7 @@ def main():
         ("./build/test_cpp", "C++-Basic"),
         ("./build/test_optimized_cpp", "C++-Optimized"),
         ("./build/test_aligned_cpp", "C++-Aligned"),
+        ("./build/average_c", "C-Basic"), 
         ("python3 average.py", "Python-Basic"),
         ("python3 average_numpy.py", "Python-NumPy"),
     ]
